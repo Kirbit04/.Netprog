@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-/*Console.WriteLine("Hello, World!");
+Console.WriteLine("Hello, World!");
 //trying the while loop
 int i = 0;
 int sum = 0;
@@ -21,7 +21,7 @@ while(lowerBound<=upperBound){
     }
     lowerBound++;
 }
-*/
+
 //calculating the gross pay of kenyan workers
 int NSSF = 800;
 int SHIF = 1250;
