@@ -7,6 +7,7 @@ C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfoInputs.cache
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfo.cs
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.sourcelink.json
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.dll
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\refint\ConsoleApp1.dll
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb

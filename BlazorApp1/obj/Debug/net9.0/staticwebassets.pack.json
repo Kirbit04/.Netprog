@@ -2,15 +2,27 @@
   "Files": [
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp1.bundle.scp.css",
-      "PackagePath": "staticwebassets\\BlazorApp1.uin0erjt0i.bundle.scp.css"
+      "PackagePath": "staticwebassets\\BlazorApp1.y4potdjncm.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\Management-Feature.webp",
+      "PackagePath": "staticwebassets\\Management-Feature.webp"
     },
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\desktop.ini",
+      "PackagePath": "staticwebassets\\desktop.ini"
+    },
+    {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\house.jpeg",
+      "PackagePath": "staticwebassets\\house.jpeg"
     },
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
@@ -187,6 +199,10 @@
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\villa.jpeg",
+      "PackagePath": "staticwebassets\\villa.jpeg"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.BlazorApp1.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

@@ -12,11 +12,11 @@ C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.A
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.AssemblyInfo.cs
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.CoreCompileInputs.cache
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\bundle\BlazorApp1.styles.css
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\projectbundle\BlazorApp1.bundle.scp.css
-C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\psnyflj9j1-khy4lop6wu.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\xscm68l0ox-bqjiyaj88i.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\a413awwuph-c2jlpeoesf.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\hbq4d3qinw-erw9l3u2r3.gz
@@ -61,8 +61,8 @@ C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\3
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\lak9eq6uf2-h1s4sie4z3.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\n6o7eave8d-63fj8s7r0e.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\6oxp0jmi7q-0j3bgjxly4.gz
-C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\ysu4imbah3-uin0erjt0i.gz
-C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\uxxncn5hnr-uin0erjt0i.gz
+C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\ysu4imbah3-y4potdjncm.gz
+C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\uxxncn5hnr-y4potdjncm.gz
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.build.endpoints.json
@@ -77,4 +77,4 @@ C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\refint\Blazo
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.pdb
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.genruntimeconfig.cache
 C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\ref\BlazorApp1.dll
-C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json
+C:\Users\USER\OneDrive\Desktop\.Netprog\BlazorApp1\obj\Debug\net9.0\compressed\psnyflj9j1-mnkurxgmei.gz
