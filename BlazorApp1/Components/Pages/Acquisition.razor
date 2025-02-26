@@ -3,17 +3,29 @@
 
 <PageTitle> Property Acquisition</PageTitle>
 
-<h1>Counter</h1>
+<h3>Welcome to the Acquisition Page!</h3>
+<p>Click on a card to navigate to different sections of the acquiring property.</p>
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div class="card-container">
+    <div class="card">
+        <NavLink class="card-link" href="/buyer">
+            <div class="card-body">
+                <h5 class="card-title">Page 1</h5>
+                <p class="card-text">Navigate to Page 1 to see more details.</p>
+            </div>
+        </NavLink>
+    </div>
+    
+    <div class="card">
+        <NavLink class="card-link" href="/tenants">
+            <div class="card-body">
+                <h5 class="card-title">Page 2</h5>
+                <p class="card-text">Navigate to Page 2 for more info.</p>
+            </div>
+        </NavLink>
+    </div>
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+    // Code-behind for any logic can go here (if necessary).
 }

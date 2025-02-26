@@ -1,5 +1,28 @@
 @page "/signup"
-<div>
-    <h3>Sign Up</h3>
-    <p>Sign up for our services</p>
+
+<h3>Welcome to the Sign Up Page!</h3>
+<p>Click on a card to navigate to different sections of the acquiring property.</p>
+
+<div class="card-container">
+    <div class="card">
+        <NavLink class="card-link" href="/user">
+            <div class="card-body">
+                <h5 class="card-title">Page 1</h5>
+                <p class="card-text">Navigate to Page 1 to see more details.</p>
+            </div>
+        </NavLink>
+    </div>
+    
+    <div class="card">
+        <NavLink class="card-link" href="/admin">
+            <div class="card-body">
+                <h5 class="card-title">Page 2</h5>
+                <p class="card-text">Navigate to Page 2 for more info.</p>
+            </div>
+        </NavLink>
+    </div>
 </div>
+
+@code {
+    // Code-behind for any logic can go here (if necessary).
+}

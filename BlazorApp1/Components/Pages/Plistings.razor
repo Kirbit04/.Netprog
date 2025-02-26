@@ -3,62 +3,113 @@
 
 <PageTitle>Property Listings</PageTitle>
 
-<h1>Weather</h1>
+<h3>Property Listing</h3>
 
-<p>This component demonstrates showing data.</p>
+<EditForm Model="@newProperty" OnValidSubmit="HandleValidSubmit" FormName="propertyForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-@if (forecasts == null)
+    <div class="form-group">
+        <label for="propertyName">Property Title </label>
+        <InputText id="propertyName" class="form-control" @bind-Value="newProperty.Name" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyName">Property Type</label>
+        <InputText id="propertyType"class="form-control" @bind-Value="newProperty.Type" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyName">Location</label>
+        <InputText id="propertyLocation" class="form-control" @bind-Value="newProperty.Location" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyName">Contact Info</label>
+        <InputText id="propertyInfo" class="form-control" @bind-Value="newProperty.Contact" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyDescription">Description</label>
+        <InputTextArea id="propertyDescription" class="form-control" @bind-Value="newProperty.Description" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyPrice">Price</label>
+        <InputNumber id="propertyPrice" class="form-control" @bind-Value="newProperty.Price" />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyImage">Property Image</label>
+        <InputFile id="propertyImage" class="form-control" OnChange="HandleImageChange" />
+        @if (imagePreview != null)
+        {
+            <img src="@imagePreview" alt="Image Preview" class="img-thumbnail mt-2" style="max-height: 200px; max-width: 200px;" />
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Property</button>
+</EditForm>
+
+<hr />
+
+<h4>Property List</h4>
+@if (properties.Count > 0)
 {
-    <p><em>Loading...</em></p>
+    <ul class="list-group">
+        @foreach (var property in properties)
+        {
+            <li class="list-group-item">
+                <strong>@property.Name</strong>
+                <p>@property.Type</p>
+                <p>@property.Location</p>
+                <p>@property.Contact</p>
+                <p>@property.Description</p>
+                <p><strong>Price:</strong> $@property.Price</p>
+                @if (!string.IsNullOrEmpty(property.ImageUrl))
+                {
+                    <img src="@property.ImageUrl" alt="Property Image" class="img-thumbnail" style="max-height: 150px; max-width: 150px;" />
+                }
+            </li>
+        }
+    </ul>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Farenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p>No properties listed yet.</p>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<Property> properties = new List<Property>();
+    private Property newProperty = new Property();
+    private string? imagePreview;
 
-    protected override async Task OnInitializedAsync()
+    public class Property
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        public string? Name { get; set; }
+        public string? Type { get; set; }
+        public string? Location { get; set; }
+        public string? Contact { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
     }
 
-    private class WeatherForecast
+    private void HandleValidSubmit()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        properties.Add(newProperty);
+        newProperty = new Property();
+        imagePreview = null;
+    }
+
+    private async Task HandleImageChange(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+        var buffer = new byte[imageFile.Size];
+        await imageFile.OpenReadStream().ReadAsync(buffer);
+        imagePreview = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(buffer)}";
+        newProperty.ImageUrl = imagePreview;
+        StateHasChanged();
     }
 }
+
