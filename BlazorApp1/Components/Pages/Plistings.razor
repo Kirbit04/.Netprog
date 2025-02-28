@@ -24,7 +24,7 @@
         <InputText id="propertyLocation" class="form-control" @bind-Value="newProperty.Location" />
     </div>
 
-    <div class="form-group">
+    <div class="form-group">                                          
         <label for="propertyName">Contact Info</label>
         <InputText id="propertyInfo" class="form-control" @bind-Value="newProperty.Contact" />
     </div>
@@ -70,6 +70,9 @@
                 {
                     <img src="@property.ImageUrl" alt="Property Image" class="img-thumbnail" style="max-height: 150px; max-width: 150px;" />
                 }
+                <p>
+                    <button @onclick="() => DeleteBuyer(property)">Delete</button>
+                </p>
             </li>
         }
     </ul>
@@ -110,6 +113,10 @@ else
         imagePreview = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(buffer)}";
         newProperty.ImageUrl = imagePreview;
         StateHasChanged();
+    }
+    private void DeleteBuyer(Property property)
+    {
+        properties.Remove(property);
     }
 }
 

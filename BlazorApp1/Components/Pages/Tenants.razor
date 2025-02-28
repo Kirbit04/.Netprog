@@ -1,4 +1,125 @@
 @page "/tenants"
+@attribute [StreamRendering]
 
-<h3>Page 2</h3>
-<p>Welcome to Page 2!</p>
+<PageTitle>Tenant Registration</PageTitle>
+
+<h3>Tenant Registration</h3>
+
+<EditForm Model="@newTenant" OnValidSubmit="HandleValidSubmit" FormName="tenantForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="firstName">Firstname</label>
+        <InputText id="firstName" class="form-control" @bind-Value="newTenant.fname" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="lastName">Lastname</label>
+        <InputText id="lastname"class="form-control" @bind-Value="newTenant.lname" required />
+    </div>
+
+    <div class="form-group">
+        <label for="ID">ID/Passport</label>
+        <InputText id="buyerID" class="form-control" @bind-Value="newTenant.ID" required />
+    </div>
+
+    <div class="form-group">                                          
+        <label for="propertyName">Current Address</label>
+        <InputText id="buyerAddress" class="form-control" @bind-Value="newTenant.cAdd" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="propertyDescription">Email Address</label>
+        <InputText id="buyerEmail" class="form-control" @bind-Value="newTenant.email" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="propertyPrice">Phone Number</label>
+        <InputText id="buyerPnumber" class="form-control" aria-placeholder="254xxxxxxxxx" @bind-Value="newTenant.Pnumber" required />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyImage">Property Preferences</label>
+        <InputTextArea id="propertyPreference" class="form-control" @bind-Value="newTenant.Ppref" />        
+    </div>
+
+     <div class="form-group">
+        <label for="leaseTerm">Lease Term</label>
+        <InputText id="lTerm" class="form-control" @bind-Value="newTenant.Lease" required/>        
+    </div>
+
+     <div class="form-group">
+        <label for="paymentMethod">Payment Method</label>
+        <InputText id="payMethod" class="form-control" @bind-Value="newTenant.Pmethod" required/>        
+    </div>
+
+     <div class="form-group">
+        <label for="Landlord">Previous Landlord Contact</label>
+        <InputTextArea id="Lnumber" class="form-control" @bind-Value="newTenant.Lnumber" />        
+    </div>
+    
+    <div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <NavLink class="btn btn-primary" href="/PropertyAcquisition" style="float: right;">Back</NavLink>
+    </div>
+</EditForm>
+
+<hr />
+
+<h4>Tenants List</h4>
+@if (tenants.Count > 0)
+{
+    <ul class="list-group">
+        @foreach (var tenant in tenants)
+        {
+            <li class="list-group-item">
+                <strong>@tenant.fname</strong>
+                <p>@tenant.lname</p>
+                <p>@tenant.ID</p>
+                <p>@tenant.cAdd</p>
+                <p>@tenant.email</p>
+                <p>@tenant.Pnumber</p>
+                <p>@tenant.Ppref</p>
+                <p>@tenant.Lease</p>
+                <p>@tenant.Pmethod</p>
+                <p>@tenant.Lnumber</p>
+                <p>
+                    <button @onclick="() => DeleteTenant(tenant)">Delete</button>
+                </p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No Tenants registered yet.</p>
+}
+
+@code {
+    private List<TenantModel> tenants = new List<TenantModel>();
+    private TenantModel newTenant = new TenantModel();
+
+    public class TenantModel
+    {
+        public string? fname { get; set; }
+        public string? lname { get; set; }
+        public string? ID { get; set; }
+        public string? cAdd { get; set; }
+        public string? email { get; set; }
+        public string? Pnumber { get; set; }
+        public string? Ppref { get; set; }
+        public string? Lease { get; set; }
+        public string? Pmethod { get; set; }
+        public string? Lnumber { get; set; }
+    }
+    private void HandleValidSubmit()
+    {
+        tenants.Add(newTenant);
+        newTenant = new TenantModel();
+    }
+    private void DeleteTenant(TenantModel tenant)
+    {
+        tenants.Remove(tenant);
+    }
+}

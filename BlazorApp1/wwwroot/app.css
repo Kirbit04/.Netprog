@@ -170,16 +170,18 @@ button:hover {
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
+    gap: 2rem;
     margin: 20px;
 }
 
 .card {
-    border: 1px solid #ddd;
+    border: 1px solid #0b4b10;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px #148339;
     cursor: pointer;
+    background-color: #0b571e;
+    height: 200px;
 }
 
 .card-link {
@@ -194,16 +196,21 @@ button:hover {
 .card-title {
     font-size: 1.5rem;
     margin-bottom: 10px;
+    color: white;
 }
 
 .card-text {
     font-size: 1rem;
-    color: #555;
+    color: #f5eeee;
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.Acqui{
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
 }
 /*End Card Link Section*/
 

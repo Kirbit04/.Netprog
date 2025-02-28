@@ -1,4 +1,111 @@
 @page "/buyer"
+@attribute [StreamRendering]
 
-<h3>Page 1</h3>
-<p>Welcome to Page 1!</p>
+<PageTitle>Buyer Registration</PageTitle>
+
+<h3>Buyer Registration</h3>
+
+<EditForm Model="@newBuyer" OnValidSubmit="HandleValidSubmit" FormName="buyerForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="firstName">Firstname</label>
+        <InputText id="firstName" class="form-control" @bind-Value="newBuyer.fname" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="lastName">Lastname</label>
+        <InputText id="lastname"class="form-control" @bind-Value="newBuyer.lname" required />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyName">ID/Passport</label>
+        <InputText id="buyerID" class="form-control" @bind-Value="newBuyer.ID" required />
+    </div>
+
+    <div class="form-group">                                          
+        <label for="propertyName">Current Address</label>
+        <InputText id="buyerAddress" class="form-control" @bind-Value="newBuyer.cAdd" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="propertyDescription">Email Address</label>
+        <InputText id="buyerEmail" class="form-control" @bind-Value="newBuyer.email" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="propertyPrice">Phone Number</label>
+        <InputText id="buyerPnumber" class="form-control" aria-placeholder="254xxxxxxxxx" @bind-Value="newBuyer.Pnumber" required />
+    </div>
+
+    <div class="form-group">
+        <label for="propertyImage">Property Preferences</label>
+        <InputTextArea id="propertyPreference" class="form-control" @bind-Value="newBuyer.Ppref" />        
+    </div>
+
+    <div class="form-group">
+        <label for="paymentMethod">Payment Method</label>
+        <InputText id="payMethod" class="form-control" @bind-Value="newBuyer.Pmethod" required />        
+    </div>
+
+    <div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <NavLink class="btn btn-primary" href="/PropertyAcquisition" style="float: right;">Back</NavLink>
+    </div>
+</EditForm>
+
+<hr />
+
+<h4>Buyer List</h4>
+@if (buyers.Count > 0)
+{
+    <ul class="list-group">
+        @foreach (var buyer in buyers)
+        {
+            <li class="list-group-item">
+                <strong>@buyer.fname</strong>
+                <p>@buyer.lname</p>
+                <p>@buyer.ID</p>
+                <p>@buyer.cAdd</p>
+                <p>@buyer.email</p>
+                <p>@buyer.Pnumber</p>
+                <p>@buyer.Ppref</p>
+                <p>@buyer.Pmethod</p>
+                <p>
+                    <button @onclick="() => DeleteBuyer(buyer)">Delete</button>
+                </p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No buyers registered yet.</p>
+}
+
+@code {
+    private List<BuyerModel> buyers = new List<BuyerModel>();
+    private BuyerModel newBuyer = new BuyerModel();
+
+    public class BuyerModel
+    {
+        public string? fname { get; set; }
+        public string? lname { get; set; }
+        public string? ID { get; set; }
+        public string? cAdd { get; set; }
+        public string? email { get; set; }
+        public string? Pnumber { get; set; }
+        public string? Ppref { get; set; }
+        public string? Pmethod { get; set; }
+    }
+    private void HandleValidSubmit()
+    {
+        buyers.Add(newBuyer);
+        newBuyer = new BuyerModel();
+    }
+    private void DeleteBuyer(BuyerModel buyer)
+    {
+        buyers.Remove(buyer);
+    }
+}
