@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\home.webp",
+      "PackagePath": "staticwebassets\\home.webp"
+    },
+    {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\house.jpeg",
       "PackagePath": "staticwebassets\\house.jpeg"
     },
@@ -199,6 +203,14 @@
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\log.jpg",
+      "PackagePath": "staticwebassets\\log.jpg"
+    },
+    {
+      "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\sign.jpg",
+      "PackagePath": "staticwebassets\\sign.jpg"
     },
     {
       "Id": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\villa.jpeg",

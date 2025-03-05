@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qYGwC2aaeGkrBEjqsGPRspeVbN60kVGoRMfqLcQtIJk=",
+  "Hash": "ec0deL7Fam+LMwGmzjG8/32jM8hb9nUpujf+WaaT7eI=",
   "Source": "BlazorApp1",
   "BasePath": "_content/BlazorApp1",
   "Mode": "Default",
@@ -1109,6 +1109,27 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
+      "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\home.webp",
+      "SourceId": "BlazorApp1",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\",
+      "BasePath": "_content/BlazorApp1",
+      "RelativePath": "home#[.{fingerprint}]?.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8opzqe70cj",
+      "Integrity": "uC56GR81uFEXKIWHWLS6/R/Clt4CkvbHJqJ84hNEZ14=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\home.webp"
+    },
+    {
       "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\house.jpeg",
       "SourceId": "BlazorApp1",
       "SourceType": "Discovered",
@@ -2054,6 +2075,27 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
+      "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\log.jpg",
+      "SourceId": "BlazorApp1",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\",
+      "BasePath": "_content/BlazorApp1",
+      "RelativePath": "log#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "s1x8q6jvjv",
+      "Integrity": "UHu37Rz6gUxfDoNoNbrh/dYH8yJ0fMRghXuteGjahu0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\log.jpg"
+    },
+    {
       "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\Management-Feature.webp",
       "SourceId": "BlazorApp1",
       "SourceType": "Discovered",
@@ -2073,6 +2115,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Management-Feature.webp"
+    },
+    {
+      "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\sign.jpg",
+      "SourceId": "BlazorApp1",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\",
+      "BasePath": "_content/BlazorApp1",
+      "RelativePath": "sign#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8twh2jyuts",
+      "Integrity": "pDFNBhgSJbjcO49Ol4gc71ZN9+R6cDpfK1lG8yNAQFo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\sign.jpg"
     },
     {
       "Identity": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\villa.jpeg",
@@ -3152,6 +3215,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
+        }
+      ]
+    },
+    {
+      "Route": "home.8opzqe70cj.webp",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\home.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31920"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"uC56GR81uFEXKIWHWLS6/R/Clt4CkvbHJqJ84hNEZ14=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 10:41:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8opzqe70cj"
+        },
+        {
+          "Name": "label",
+          "Value": "home.webp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-uC56GR81uFEXKIWHWLS6/R/Clt4CkvbHJqJ84hNEZ14="
+        }
+      ]
+    },
+    {
+      "Route": "home.webp",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\home.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31920"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"uC56GR81uFEXKIWHWLS6/R/Clt4CkvbHJqJ84hNEZ14=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 10:41:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-uC56GR81uFEXKIWHWLS6/R/Clt4CkvbHJqJ84hNEZ14="
         }
       ]
     },
@@ -16350,6 +16495,88 @@
       ]
     },
     {
+      "Route": "log.jpg",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\log.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "26154"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UHu37Rz6gUxfDoNoNbrh/dYH8yJ0fMRghXuteGjahu0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 11:57:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-UHu37Rz6gUxfDoNoNbrh/dYH8yJ0fMRghXuteGjahu0="
+        }
+      ]
+    },
+    {
+      "Route": "log.s1x8q6jvjv.jpg",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\log.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "26154"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UHu37Rz6gUxfDoNoNbrh/dYH8yJ0fMRghXuteGjahu0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 11:57:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "s1x8q6jvjv"
+        },
+        {
+          "Name": "label",
+          "Value": "log.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UHu37Rz6gUxfDoNoNbrh/dYH8yJ0fMRghXuteGjahu0="
+        }
+      ]
+    },
+    {
       "Route": "Management-Feature.lzw4lv4klx.webp",
       "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\Management-Feature.webp",
       "Selectors": [],
@@ -16428,6 +16655,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-/y62DgoaWWPAvSI2lVnuJLLK+vIjO4Wf6GsRMyFzJi0="
+        }
+      ]
+    },
+    {
+      "Route": "sign.8twh2jyuts.jpg",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\sign.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "28970"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pDFNBhgSJbjcO49Ol4gc71ZN9+R6cDpfK1lG8yNAQFo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 11:51:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8twh2jyuts"
+        },
+        {
+          "Name": "label",
+          "Value": "sign.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-pDFNBhgSJbjcO49Ol4gc71ZN9+R6cDpfK1lG8yNAQFo="
+        }
+      ]
+    },
+    {
+      "Route": "sign.jpg",
+      "AssetFile": "C:\\Users\\USER\\OneDrive\\Desktop\\.Netprog\\BlazorApp1\\wwwroot\\sign.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "28970"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"pDFNBhgSJbjcO49Ol4gc71ZN9+R6cDpfK1lG8yNAQFo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 11:51:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-pDFNBhgSJbjcO49Ol4gc71ZN9+R6cDpfK1lG8yNAQFo="
         }
       ]
     },

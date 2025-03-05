@@ -8,6 +8,8 @@ builder.Services.AddRazorComponents()
 
 var app = builder.Build();
 
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://your-base-address.com") });
+await builder.Build().RunAsync();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

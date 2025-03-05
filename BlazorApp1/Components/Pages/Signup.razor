@@ -1,28 +1,150 @@
 @page "/signup"
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+@inject HttpClient Http
 
-<h3>Welcome to the Sign Up Page!</h3>
-<p>Click on a card to navigate to different sections of the acquiring property.</p>
+<style>
+    .signup-container {
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto; /* Center the container */
+    text-align: center;
+    }
 
-<div class="card-container">
-    <div class="card">
-        <NavLink class="card-link" href="/user">
-            <div class="card-body">
-                <h5 class="card-title">Page 1</h5>
-                <p class="card-text">Navigate to Page 1 to see more details.</p>
+    .signup-container h3 {
+    color: #2C3E50;
+    margin-bottom: 20px;
+    }
+    .signup{
+        background-image: url(log.jpg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .form-group {
+    margin-bottom: 15px;
+    }
+    .btn-primary {
+    background-color: #1168a1;
+    border-color: #2c91d4;
+    }
+
+    .btn-primary:hover {
+    background-color: #3498db;
+    }
+
+</style>
+
+<section class="signup">
+<div class="signup-container">
+    <h3>Create Your Account</h3>
+        <EditForm Model="@signUpModel" OnValidSubmit="HandleValidSubmit" FormName="signupForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="FullName">Full Name</label>
+                <InputText id="FullName" class="form-control" @bind-Value="signUpModel.FullName" />
+                <ValidationMessage For="@(() => signUpModel.FullName)" />
             </div>
-        </NavLink>
-    </div>
-    
-    <div class="card">
-        <NavLink class="card-link" href="/admin">
-            <div class="card-body">
-                <h5 class="card-title">Page 2</h5>
-                <p class="card-text">Navigate to Page 2 for more info.</p>
+
+            <div class="form-group">
+                <label for="Email">Email Address</label>
+                <InputText id="Email" type="email" class="form-control" @bind-Value="signUpModel.Email"/>
+                <ValidationMessage For="@(() => signUpModel.Email)" />
             </div>
-        </NavLink>
-    </div>
+
+            <div class="form-group">
+                <label for="Phone">Phone Number</label>
+                <InputText id="Phone" type="tel" class="form-control" @bind-Value="signUpModel.Phone" />
+                <ValidationMessage For="@(() => signUpModel.Phone)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <InputText id="Password" type="password" class="form-control" @bind-Value="signUpModel.Password" />
+                <ValidationMessage For="@(() => signUpModel.Password)" />
+            </div>
+
+            <div class="form-group">
+                <label for="ConfirmPassword">Confirm Password</label>
+                <InputText id="ConfirmPassword" type="password" class="form-control" @bind-Value="signUpModel.ConfirmPassword" />
+                <ValidationMessage For="@(() => signUpModel.ConfirmPassword)" />
+            </div>
+
+            <div class="form-group">
+                <label for="UserType">Role</label>
+                <select id="UserType" class="form-control" @bind="signUpModel.UserType">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <hr>
+            <p class="mt-3">Don't have an account?<a href="/ulog">Log In</a></p>
+        </EditForm>
 </div>
+</section>
 
 @code {
-    // Code-behind for any logic can go here (if necessary).
+    private SignUpModel signUpModel = new SignUpModel();
+    private async Task HandleValidSubmit()
+    {
+        // Handle the form submission logic (e.g., send data to the server).
+        try
+        {
+            var response = await Http.PostAsJsonAsync("https://your-api-endpoint.com/signup", signUpModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (signUpModel.UserType == "user")
+                {
+                    Navigation.NavigateTo("/");
+                }
+                else if (signUpModel.UserType == "admin")
+                {
+                    Navigation.NavigateTo("/admin");
+                }
+            }
+            else
+            {
+                // Handle error (e.g., display a message to the user)
+                Console.WriteLine("Error during sign-up.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }       
+
+}
+
+    public class SignUpModel
+    {
+        [Required(ErrorMessage = "Full name is required")]
+        public string? FullName { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required")]
+        public string? Phone { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
+        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "Confirm password is required")]
+        [Compare("Password", ErrorMessage = "Password and confirm password must match")]
+        public string? ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Please select a user type")]
+        public string? UserType { get; set; }
+    }
 }
