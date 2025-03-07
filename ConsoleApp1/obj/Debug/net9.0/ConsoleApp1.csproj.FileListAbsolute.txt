@@ -13,3 +13,34 @@ C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\refint\Cons
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.genruntimeconfig.cache
 C:\Users\USER\OneDrive\Desktop\.Netprog\ConsoleApp1\obj\Debug\net9.0\ref\ConsoleApp1.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.exe
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.deps.json
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.runtimeconfig.json
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.pdb
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.csproj.AssemblyReference.cache
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfoInputs.cache
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfo.cs
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.sourcelink.json
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleA.CB28C8CC.Up2Date
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\refint\ConsoleApp1.dll
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.genruntimeconfig.cache
+C:\Users\braya\OneDrive\Desktop\first project\Netprog\ConsoleApp1\obj\Debug\net9.0\ref\ConsoleApp1.dll
