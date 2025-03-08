@@ -241,13 +241,6 @@ C:\Users\braya\OneDrive\Desktop\first project\Netprog\BlazorApp1\obj\Debug\net9.
 C:\Users\braya\OneDrive\Desktop\first project\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.pdb
 C:\Users\braya\OneDrive\Desktop\first project\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.genruntimeconfig.cache
 C:\Users\braya\OneDrive\Desktop\first project\Netprog\BlazorApp1\obj\Debug\net9.0\ref\BlazorApp1.dll
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.AssemblyReference.cache
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.AssemblyInfoInputs.cache
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.AssemblyInfo.cs
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.CoreCompileInputs.cache
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\appsettings.json
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\BlazorApp1.staticwebassets.runtime.json
@@ -355,6 +348,13 @@ C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.AssemblyReference.cache
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.AssemblyInfoInputs.cache
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.AssemblyInfo.cs
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.CoreCompileInputs.cache
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\scopedcss\bundle\BlazorApp1.styles.css
@@ -415,10 +415,10 @@ C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.BlazorApp1.props
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.BlazorApp1.props
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.pack.json
+C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.Up2Date
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.dll
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\refint\BlazorApp1.dll
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.pdb
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\BlazorApp1.genruntimeconfig.cache
 C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\ref\BlazorApp1.dll
-C:\Users\braya\OneDrive\Desktop\firstproject\Netprog\BlazorApp1\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
