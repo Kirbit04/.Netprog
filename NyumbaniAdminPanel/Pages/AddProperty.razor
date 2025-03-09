@@ -1,0 +1,847 @@
+﻿@page "/properties/add"
+@using System.Collections.Generic
+@using System.ComponentModel.DataAnnotations
+@using System.Data
+@using Microsoft.Data.SqlClient
+@using Dapper
+@using Microsoft.JSInterop
+@using System.IO
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration
+
+<div class="page-container">
+    <div class="page-header">
+        <h1>Add New Property</h1>
+        <button class="back-button" @onclick="GoBack">
+            <i class="fas fa-arrow-left"></i> Back to Properties
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success">
+            @successMessage
+        </div>
+    }
+
+    <div class="form-container">
+        <EditForm Model="@property" OnValidSubmit="SaveProperty">
+            <DataAnnotationsValidator />
+
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Property Title</label>
+                        <InputText @bind-Value="property.Title" class="form-control" placeholder="Enter property title" />
+                        <ValidationMessage For="@(() => property.Title)" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Property Type</label>
+                        <InputSelect @bind-Value="property.Type" class="form-control">
+                            <option value="">Select property type</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="villa">Villa</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="land">Land</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(() => property.Type)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Owner</label>
+                        <InputSelect @bind-Value="property.OwnerId" class="form-control">
+                            <option value="0">Select owner</option>
+                            @foreach (var owner in owners)
+                            {
+                                <option value="@owner.Id">@owner.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => property.OwnerId)" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price (KES)</label>
+                        <InputNumber @bind-Value="property.Price" class="form-control" placeholder="0.00" />
+                    </div>
+                    <div class="form-group">
+                        <label>Size (sqm)</label>
+                        <InputNumber @bind-Value="property.SizeSqm" class="form-control" step="0.01" placeholder="0.00" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Property Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bedrooms</label>
+                        <InputNumber @bind-Value="property.Bedrooms" class="form-control" min="0" placeholder="Number of bedrooms" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bathrooms</label>
+                        <InputNumber @bind-Value="property.Bathrooms" class="form-control" min="0" placeholder="Number of bathrooms" />
+                    </div>
+                    <div class="form-group">
+                        <label>Year Built</label>
+                        <InputNumber @bind-Value="property.YearBuilt" class="form-control" min="1900" max="@DateTime.Now.Year" placeholder="Year of construction" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <InputTextArea @bind-Value="property.Description" class="form-control" rows="4" placeholder="Enter property description" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Location</h2>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>Address</label>
+                        <InputText @bind-Value="property.Address" class="form-control" placeholder="Enter full address" />
+                        <ValidationMessage For="@(() => property.Address)" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Neighborhood</label>
+                        <InputText @bind-Value="property.Neighborhood" class="form-control" placeholder="Neighborhood/Estate" />
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <InputText @bind-Value="property.City" class="form-control" placeholder="City" />
+                        <ValidationMessage For="@(() => property.City)" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>County</label>
+                        <InputText @bind-Value="property.County" class="form-control" placeholder="County" />
+                        <ValidationMessage For="@(() => property.County)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Postal Code</label>
+                        <InputText @bind-Value="property.PostalCode" class="form-control" placeholder="Postal code" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <InputNumber @bind-Value="property.Latitude" class="form-control" step="0.000001" placeholder="Latitude coordinates" />
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <InputNumber @bind-Value="property.Longitude" class="form-control" step="0.000001" placeholder="Longitude coordinates" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Features & Amenities</h2>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>Amenities</label>
+                        <InputTextArea @bind-Value="property.Amenities" class="form-control" rows="3" placeholder="List amenities separated by commas (e.g. Swimming pool, Gym, 24/7 Security)" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.IsFurnished" id="furnished" />
+                            <label for="furnished">Furnished</label>
+                        </div>
+                    </div>
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasParking" id="parking" />
+                            <label for="parking">Parking</label>
+                        </div>
+                        @if (property.HasParking)
+                        {
+                            <div class="nested-input">
+                                <label>Parking Spaces</label>
+                                <InputNumber @bind-Value="property.ParkingSpaces" class="form-control" min="1" placeholder="Number of spaces" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasGarden" id="garden" />
+                            <label for="garden">Garden</label>
+                        </div>
+                    </div>
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasSecurity" id="security" />
+                            <label for="security">Security</label>
+                        </div>
+                        @if (property.HasSecurity)
+                        {
+                            <div class="nested-input">
+                                <label>Security Features</label>
+                                <InputText @bind-Value="property.SecurityFeatures" class="form-control" placeholder="E.g. CCTV, Guards" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasSwimmingPool" id="pool" />
+                            <label for="pool">Swimming Pool</label>
+                        </div>
+                    </div>
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasGym" id="gym" />
+                            <label for="gym">Gym</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasElevator" id="elevator" />
+                            <label for="elevator">Elevator</label>
+                        </div>
+                    </div>
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasBackupGenerator" id="generator" />
+                            <label for="generator">Backup Generator</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="feature-group">
+                        <div class="checkbox-group">
+                            <InputCheckbox @bind-Value="property.HasBackupWater" id="water" />
+                            <label for="water">Backup Water</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Distance from Main Road (km)</label>
+                        <InputNumber @bind-Value="property.DistanceFromMainRoad" class="form-control" step="0.01" placeholder="0.00" />
+                    </div>
+                    <div class="form-group">
+                        <label>Nearest Landmark</label>
+                        <InputText @bind-Value="property.NearestLandmark" class="form-control" placeholder="E.g. Mall, Hospital, School" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Status & Availability</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Property Status</label>
+                        <InputSelect @bind-Value="property.Status" class="form-control">
+                            <option value="available">Available</option>
+                            <option value="rented">Rented</option>
+                            <option value="sold">Sold</option>
+                            <option value="under_maintenance">Under Maintenance</option>
+                            <option value="off_market">Off Market</option>
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Images</h2>
+                <div class="form-row">
+                    <div class="image-upload-container">
+                        <div class="image-upload-box">
+                            <InputFile OnChange="OnFileSelected" multiple accept="image/*" class="hidden-file-input" id="property-images" />
+                            <label for="property-images" class="image-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload images</span>
+                                <span class="small-text">or drag and drop images here</span>
+                            </label>
+                        </div>
+                        <div class="image-preview-area">
+                            @if (imageFiles.Count > 0)
+                            {
+                                foreach (var image in imageFiles)
+                                {
+                                    <div class="image-preview">
+                                        <img src="@image.PreviewUrl" alt="Property" />
+                                        <div class="image-actions">
+                                            <button type="button" class="image-action primary" @onclick="() => SetAsPrimary(image)">
+                                                @(image.IsPrimary ? "✓ Primary" : "Set as Primary")
+                                            </button>
+                                            <button type="button" class="image-action delete" @onclick="() => RemoveImage(image)">Remove</button>
+                                        </div>
+                                        <div class="image-caption">
+                                            <input type="text" 
+                                                    placeholder="Add caption" 
+                                                    value="@image.Caption" 
+                                                    @onchange="(e) => UpdateCaption(image, e.Value?.ToString())" />
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="no-images">
+                                    <p>No images uploaded yet</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" @onclick="GoBack">Cancel</button>
+                <button type="submit" class="btn-primary">Save Property</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+<style>
+    .page-container {
+        padding: 20px;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        margin: 0;
+        color: #333;
+    }
+
+    .back-button {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        color: #0b4b10;
+    }
+
+    .back-button:hover {
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .form-section {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 20px;
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .form-section h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full-width {
+        flex: 0 0 100%;
+    }
+
+    .form-group label {
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-control {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    .feature-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    .nested-input {
+        margin-left: 27px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nested-input label {
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .image-upload-container {
+        width: 100%;
+    }
+
+    .image-upload-box {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .image-upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .image-upload-label i {
+        font-size: 36px;
+        color: #0b4b10;
+        margin-bottom: 10px;
+    }
+
+    .small-text {
+        font-size: 12px;
+        color: #777;
+        margin-top: 5px;
+    }
+
+    .image-preview-area {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .image-preview {
+        width: 180px;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .image-actions {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .image-action {
+        border: none;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .image-action.primary {
+        background-color: #e3f2fd;
+        color: #0b4b10;
+    }
+
+    .image-action.delete {
+        background-color: #ffebee;
+        color: #e53935;
+    }
+    
+    .image-caption {
+        padding: 5px 8px;
+    }
+    
+    .image-caption input {
+        width: 100%;
+        padding: 4px;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+
+    .no-images {
+        width: 100%;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        text-align: center;
+        color: #666;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        padding: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background-color: white;
+        border: 1px solid #ddd;
+        color: #555;
+    }
+
+    .btn-primary {
+        background-color: #0b4b10;
+        border: none;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #f5f5f5;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b4b10;
+    }
+    
+    .alert {
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    
+    .alert-danger {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+    
+    .alert-success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+    
+    .hidden-file-input {
+        display: none;
+    }
+    
+    .validation-message {
+        color: #c62828;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+</style>
+
+@code {
+    private PropertyModel property = new PropertyModel();
+    private List<OwnerModel> owners = new List<OwnerModel>();
+    private List<PropertyImageFile> imageFiles = new List<PropertyImageFile>();
+    private string errorMessage = "";
+    private string successMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load owners
+        await LoadOwnersAsync();
+    }
+
+    private async Task LoadOwnersAsync()
+    {
+        try 
+        {
+            // In a real application, you would fetch this from your database
+            // For now, load sample owners that match your database
+            owners = new List<OwnerModel>
+            {
+                new OwnerModel { Id = 3, Name = "David Ochieng" },
+                new OwnerModel { Id = 5, Name = "John Mwangi" },
+                new OwnerModel { Id = 9, Name = "Peter Kamau" },
+                new OwnerModel { Id = 12, Name = "Jane Nyambura" }
+            };
+            
+            // In a real application, you would do something like this:
+            // using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            // {
+            //     await connection.OpenAsync();
+            //     var query = "SELECT user_id as Id, CONCAT(first_name, ' ', last_name) as Name FROM users WHERE role = 'owner'";
+            //     owners = (await connection.QueryAsync<OwnerModel>(query)).ToList();
+            // }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading owners: {ex.Message}";
+        }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/properties");
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var files = e.GetMultipleFiles(10); // Limit to 10 files at once
+            
+            foreach (var file in files)
+            {
+                // Validate file type
+                if (!IsValidImageFile(file))
+                {
+                    errorMessage = "Please select only image files (jpg, jpeg, png).";
+                    return;
+                }
+                
+                // Create a data URL for preview (limited to 2MB for preview)
+                using var stream = file.OpenReadStream(2000000); // 2MB
+                using var ms = new MemoryStream();
+                await stream.CopyToAsync(ms);
+                ms.Position = 0;
+                
+                var imageData = ms.ToArray();
+                var base64Image = Convert.ToBase64String(imageData);
+                var fileExtension = Path.GetExtension(file.Name).ToLower();
+                var mimeType = GetMimeType(fileExtension);
+                var previewUrl = $"data:{mimeType};base64,{base64Image}";
+                
+                // Add to our collection
+                imageFiles.Add(new PropertyImageFile 
+                { 
+                    File = file,
+                    PreviewUrl = previewUrl,
+                    Caption = Path.GetFileNameWithoutExtension(file.Name),
+                    IsPrimary = imageFiles.Count == 0 // First image is primary by default
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error processing images: {ex.Message}";
+        }
+    }
+    
+    private bool IsValidImageFile(IBrowserFile file)
+    {
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+        var extension = Path.GetExtension(file.Name).ToLowerInvariant();
+        return allowedExtensions.Contains(extension);
+    }
+    
+    private string GetMimeType(string extension)
+    {
+        return extension switch
+        {
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            _ => "application/octet-stream"
+        };
+    }
+
+    private void SetAsPrimary(PropertyImageFile image)
+    {
+        foreach (var img in imageFiles)
+        {
+            img.IsPrimary = (img == image);
+        }
+    }
+
+    private void RemoveImage(PropertyImageFile image)
+    {
+        imageFiles.Remove(image);
+        
+        // If we removed the primary image and have other images, set a new primary
+        if (image.IsPrimary && imageFiles.Count > 0)
+        {
+            imageFiles[0].IsPrimary = true;
+        }
+    }
+    
+    private void UpdateCaption(PropertyImageFile image, string caption)
+    {
+        image.Caption = caption ?? "";
+    }
+
+    private async Task SaveProperty()
+    {
+        try
+        {
+            // In a real application, you would save to the database
+            // For this example, we'll simulate the save operation
+            
+            // 1. Validate data (validation already happens with DataAnnotationsValidator)
+            
+            // 2. Show a processing message
+            await JSRuntime.InvokeVoidAsync("alert", "Saving property...");
+            
+            // 3. In a real app: Process and save images, then insert the property and related data
+            
+            // 4. Show success and redirect
+            successMessage = "Property saved successfully!";
+            await JSRuntime.InvokeVoidAsync("alert", "Property saved successfully!");
+            
+            // Navigate back to properties list
+            NavigationManager.NavigateTo("/properties");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error saving property: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("alert", $"Error: {ex.Message}");
+        }
+    }
+
+    // Model classes
+    public class PropertyModel
+    {
+        [Required(ErrorMessage = "Property title is required")]
+        public string Title { get; set; } = "";
+        
+        [Required(ErrorMessage = "Property type is required")]
+        public string Type { get; set; } = "";
+        
+        [Required(ErrorMessage = "Owner is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select an owner")]
+        public int OwnerId { get; set; }
+        
+        public decimal Price { get; set; }
+        public decimal SizeSqm { get; set; }
+        public int? Bedrooms { get; set; }
+        public int? Bathrooms { get; set; }
+        public int? YearBuilt { get; set; }
+        public string Description { get; set; } = "";
+        
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; } = "";
+        
+        public string Neighborhood { get; set; } = "";
+        
+        [Required(ErrorMessage = "City is required")]
+        public string City { get; set; } = "";
+        
+        [Required(ErrorMessage = "County is required")]
+        public string County { get; set; } = "";
+        
+        public string PostalCode { get; set; } = "";
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
+        public string Amenities { get; set; } = "";
+        public bool IsFurnished { get; set; }
+        public bool HasParking { get; set; }
+        public int ParkingSpaces { get; set; }
+        public bool HasGarden { get; set; }
+        public bool HasSecurity { get; set; }
+        public string SecurityFeatures { get; set; } = "";
+        public bool HasSwimmingPool { get; set; }
+        public bool HasGym { get; set; }
+        public bool HasElevator { get; set; }
+        public bool HasBackupGenerator { get; set; }
+        public bool HasBackupWater { get; set; }
+        public decimal? DistanceFromMainRoad { get; set; }
+        public string NearestLandmark { get; set; } = "";
+        public string Status { get; set; } = "available";
+    }
+
+    public class OwnerModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+    
+    public class PropertyImageFile
+    {
+        public IBrowserFile File { get; set; }
+        public string PreviewUrl { get; set; } = "";
+        public string Caption { get; set; } = "";
+        public bool IsPrimary { get; set; }
+    }
+}

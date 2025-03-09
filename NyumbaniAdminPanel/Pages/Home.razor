@@ -1,0 +1,585 @@
+﻿@page "/"
+@using System
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager NavigationManager
+
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Nyumbani Admin Dashboard</h1>
+    
+    <div class="summary-cards">
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="card-content">
+                <h3>Properties</h3>
+                <p class="card-value">@properties.Count</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="card-content">
+                <h3>Tenants</h3>
+                <p class="card-value">@tenants.Count</p>
+            </div>
+        </div>
+        
+        
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="card-content">
+                <h3>Revenue</h3>
+                <p class="card-value">KES @string.Format("{0:n0}", totalRevenue)</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions Section -->
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+            <button class="action-button" @onclick="@(() => NavigateToAddNew("properties/add"))">
+                <i class="fas fa-plus-circle"></i>
+                Add Property
+            </button>
+            <button class="action-button" @onclick="@(() => NavigateToAddNew("users/add"))">
+                <i class="fas fa-user-plus"></i>
+                Add User
+            </button>
+        </div>
+    </div>
+    
+    <div class="dashboard-main">
+       
+
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div class="activity-list">
+                @foreach (var activity in recentActivities.Take(5))
+                {
+                    <div class="activity-item">
+                        <div class="activity-icon @GetActivityIconClass(activity.Type)">
+                            <i class="@GetActivityIcon(activity.Type)"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h4>@activity.Title</h4>
+                            <p>@activity.Description</p>
+                            <span class="activity-time">@activity.Timestamp.ToString("MMM dd, yyyy HH:mm")</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        
+        <div class="data-visualization">
+            <h2>Data Insights</h2>
+            
+            <div class="chart-container">
+                <h3>Property Occupancy</h3>
+                <div class="pie-chart">
+                    @{
+                        var occupiedPercentage = properties.Count > 0 ? 
+                            (int)Math.Round((double)properties.Count(p => p.IsOccupied) / properties.Count * 100) : 0;
+                        var vacantPercentage = 100 - occupiedPercentage;
+                    }
+                    <div class="pie-slice occupied" style="--percentage: @occupiedPercentage%;"></div>
+                    <div class="pie-chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color occupied"></span>
+                            <span>Occupied (@occupiedPercentage%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color vacant"></span>
+                            <span>Vacant (@vacantPercentage%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           <div class="chart-container">
+    <h3>Revenue by Property Type</h3>
+    <div class="bar-chart">
+        @foreach (var group in revenueByPropertyType)
+        {
+            var barHeight = maxRevenueByType > 0 ? Math.Min(100, (group.Value / maxRevenueByType) * 100) : 0;
+            <div class="bar-group">
+                <div class="bar-label">@group.Key</div>
+                <div class="bar" style="--height: @barHeight%">
+                    <span class="bar-value">KES @string.Format("{0:n0}", group.Value)</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .dashboard-title {
+        margin-bottom: 24px;
+        color: #333;
+        font-size: 28px;
+    }
+    
+    
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #f0f7ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 20px;
+        color: #0b4b10;
+    }
+    
+    .card-content h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #666;
+    }
+    
+    .card-value {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 5px 0 0;
+        color: #333;
+    }
+    
+    
+    .quick-actions {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .quick-actions h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .action-button {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        background: #0b4b10;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .action-button:hover {
+        background: #00a33e;
+    }
+    
+    .action-button i {
+        margin-right: 8px;
+    }
+    
+    
+    .dashboard-main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    
+    @@media (max-width: 992px) {
+        .dashboard-main {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+   
+    .recent-activity {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    
+    .recent-activity h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .activity-item {
+        display: flex;
+        padding: 12px;
+        background: #f9f9f9;
+        border-radius: 6px;
+    }
+    
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 16px;
+    }
+    
+    .activity-icon.property {
+        background: #e6f7ff;
+        color: #0b4b10;
+    }
+    
+    .activity-icon.tenant {
+        background: #e6ffe6;
+        color: #28a745;
+    }
+    
+    .activity-icon.agent {
+        background: #fff5e6;
+        color: #fd7e14;
+    }
+    
+    .activity-details h4 {
+        margin: 0;
+        font-size: 16px;
+    }
+    
+    .activity-details p {
+        margin: 5px 0;
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .activity-time {
+        font-size: 12px;
+        color: #999;
+    }
+    
+    .view-all-button {
+        margin-top: 15px;
+        padding: 8px 16px;
+        background: transparent;
+        border: 1px solid #0b4b10;
+        color: #0b4b10;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .view-all-button:hover {
+        background: #f0f7ff;
+    }
+    
+    
+    .data-visualization {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    
+    .data-visualization h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .chart-container {
+        margin-bottom: 30px;
+    }
+    
+    .chart-container h3 {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    
+    .pie-chart {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .pie-slice {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 50%, 50% 0%, calc(50% + 50% * sin(var(--percentage) * 3.6deg)) calc(50% - 50% * cos(var(--percentage) * 3.6deg)));
+        border-radius: 50%;
+        transform: rotate(0deg);
+    }
+    
+    .pie-slice.occupied {
+        background-color: #0b4b10;
+    }
+    
+    .pie-chart-legend {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+    }
+    
+    .legend-color {
+        width: 15px;
+        height: 15px;
+        margin-right: 8px;
+        border-radius: 3px;
+    }
+    
+    .legend-color.occupied {
+        background-color: #0b4b10;
+    }
+    
+    .legend-color.vacant {
+        background-color: #f0f0f0;
+    }
+    
+    
+    .bar-chart {
+        height: 200px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding-top: 20px;
+    }
+    
+    .bar-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+    }
+    
+    .bar {
+        width: 40px;
+        height: calc(var(--height) * 1%);
+        background: #0b4b10;
+        border-radius: 4px 4px 0 0;
+        min-height: 20px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .bar-value {
+        position: absolute;
+        top: -25px;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .bar-label {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+    }
+</style>
+
+@code {
+    // Sample data 
+    private List<Property> properties = new();
+    private List<Tenant> tenants = new();
+    private List<Activity> recentActivities = new();
+    private Dictionary<string, decimal> revenueByPropertyType = new();
+    private decimal totalRevenue = 0;
+    private decimal maxRevenueByType = 0;
+
+    protected override void OnInitialized()
+    {
+        
+        LoadSampleData();
+    }
+
+    private void LoadSampleData()
+    {
+        // Sample properties
+        properties = new List<Property>
+{
+    new Property { Id = 1, Name = "Elegant Apartment in Westlands", Type = "Apartment", IsOccupied = false, MonthlyRent = 12500000 },
+    new Property { Id = 2, Name = "Spacious Family Home in Karen", Type = "House", IsOccupied = false, MonthlyRent = 45000000 },
+    new Property { Id = 3, Name = "Commercial Space in CBD", Type = "Commercial", IsOccupied = false, MonthlyRent = 28000000 },
+    new Property { Id = 4, Name = "Beachfront Villa in Nyali", Type = "Villa", IsOccupied = false, MonthlyRent = 75000000 },
+    new Property { Id = 5, Name = "Investment Land in Syokimau", Type = "Land", IsOccupied = false, MonthlyRent = 15000000 },
+    new Property { Id = 6, Name = "Modern Apartment in Kilimani", Type = "Apartment", IsOccupied = false, MonthlyRent = 18500000 },
+    new Property { Id = 7, Name = "Cozy Studio in Parklands", Type = "Apartment", IsOccupied = true, MonthlyRent = 6500000 },
+    new Property { Id = 8, Name = "Townhouse in South C", Type = "House", IsOccupied = false, MonthlyRent = 22000000 },
+    new Property { Id = 9, Name = "Retail Space in Westgate Mall", Type = "Commercial", IsOccupied = false, MonthlyRent = 35000000 },
+    new Property { Id = 10, Name = "Bedsitter in Roysambu", Type = "Apartment", IsOccupied = false, MonthlyRent = 1800000 },
+    new Property { Id = 11, Name = "Executive Apartment in Lavington", Type = "Apartment", IsOccupied = false, MonthlyRent = 32000000 },
+    new Property { Id = 12, Name = "Family Bungalow in Kitengela", Type = "House", IsOccupied = false, MonthlyRent = 16500000 }
+};
+
+
+        
+        tenants = new List<Tenant>
+{
+    new Tenant { Id = 1, Name = "Mary Akinyi", Email = "mary.akinyi@gmail.com", Phone = "0745678901", PropertyId = 4 },
+    new Tenant { Id = 2, Name = "Michael Kipchoge", Email = "michael.kipchoge@gmail.com", Phone = "0778901234", PropertyId = 6 },
+    new Tenant { Id = 3, Name = "Grace Adhiambo", Email = "grace.adhiambo@gmail.com", Phone = "0789012345", PropertyId = 8 },
+    new Tenant { Id = 4, Name = "Daniel Mutuku", Email = "daniel.mutuku@gmail.com", Phone = "0711223344", PropertyId = 10 }
+};
+
+
+recentActivities = new List<Activity>
+{
+    new Activity { Id = 1, Type = "property", Title = "New Property Listed", Description = "Executive Apartment in Lavington was listed for sale", Timestamp = DateTime.Parse("2023-09-01 11:20:00") },
+    
+    new Activity { Id = 2, Type = "tenant", Title = "New Tenant", Description = "Grace Adhiambo rented Cozy Studio in Parklands", Timestamp = DateTime.Parse("2023-10-01 11:20:00") },
+    
+    new Activity { Id = 3, Type = "property", Title = "Maintenance Request", Description = "Washing Machine Repair requested for Modern Apartment in Kilimani", Timestamp = DateTime.Parse("2023-10-08 12:30:00") },
+    
+    new Activity { Id = 4, Type = "property", Title = "Gate Remote Not Working", Description = "Maintenance requested for Beachfront Villa in Nyali", Timestamp = DateTime.Parse("2023-10-09 14:20:00") },
+    
+    new Activity { Id = 5, Type = "property", Title = "Property Viewing", Description = "Client scheduled viewing for Elegant Apartment in Westlands", Timestamp = DateTime.Parse("2023-10-15 10:00:00") },
+    
+    new Activity { Id = 6, Type = "tenant", Title = "Rent Payment", Description = "Rent received for Cozy Studio in Parklands", Timestamp = DateTime.Parse("2023-10-05 11:45:00") },
+};
+        // Calculate total revenue
+        totalRevenue = properties.Where(p => p.IsOccupied).Sum(p => p.MonthlyRent) * 12;
+
+        // Calculate revenue by property type
+        revenueByPropertyType = properties
+            .Where(p => p.IsOccupied)
+            .GroupBy(p => p.Type)
+            .ToDictionary(
+                g => g.Key, 
+                g => g.Sum(p => p.MonthlyRent) * 12
+            );
+
+        // Find max revenue for chart scaling
+        maxRevenueByType = revenueByPropertyType.Values.Max();
+    }
+
+    private string GetActivityIcon(string activityType)
+    {
+        return activityType switch
+        {
+            "property" => "fas fa-home",
+            "tenant" => "fas fa-user",
+            "agent" => "fas fa-user-tie",
+            _ => "fas fa-bell"
+        };
+    }
+
+    private string GetActivityIconClass(string activityType)
+    {
+        return activityType;
+    }
+
+    private void NavigateToAddNew(string type)
+    {
+        switch (type)
+        {
+            case "property":
+                NavigationManager.NavigateTo("/properties/add");
+                break;
+            case "tenant":
+                NavigationManager.NavigateTo("/tenants/add");
+                break;
+        }
+    }
+
+   
+    // Model classes
+    public class Property
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Type { get; set; } = "";
+        public bool IsOccupied { get; set; }
+        public decimal MonthlyRent { get; set; }
+    }
+
+    public class Tenant
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public int PropertyId { get; set; }
+    }
+
+    public class Agent
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public int PropertiesManaged { get; set; }
+    }
+
+    public class Activity
+    {
+        public int Id { get; set; }
+        public string Type { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public DateTime Timestamp { get; set; }
+    }
+}

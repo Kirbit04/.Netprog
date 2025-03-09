@@ -1,0 +1,194 @@
+﻿@page "/appointments"
+
+<h3>Appointments Management</h3>
+
+<button class="btn btn-primary mb-3" @onclick="AddNewAppointment">Add New Appointment</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Date & Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appt in appointments)
+        {
+            <tr>
+                <td>@GetPropertyName(appt.PropertyId)</td>
+                <td>@appt.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@appt.Status</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" @onclick="() => EditAppointment(appt)">Edit</button>
+                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteAppointment(appt)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (showModal)
+{
+    <div class="modal" style="display: block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@modalTitle</h5>
+                    <button type="button" class="close" @onclick="CloseModal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Property</label>
+                        <select class="form-control" @bind="currentAppointment.PropertyId">
+                            @foreach (var prop in properties)
+                            {
+                                <option value="@prop.Id">@prop.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" class="form-control" @bind="currentDate" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" @bind="currentAppointment.Status">
+                            <option value="scheduled">Scheduled</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @onclick="SaveAppointment">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private class Property
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    private class Appointment
+    {
+        public int Id { get; set; }
+        public int PropertyId { get; set; }
+        public DateTime AppointmentDate { get; set; }
+        public string Status { get; set; }
+    }
+
+    private List<Property> properties = new List<Property>();
+    private List<Appointment> appointments = new List<Appointment>();
+    private Appointment currentAppointment = new Appointment();
+    private DateTime currentDate = DateTime.Today;
+    private bool showModal = false;
+    private string modalTitle = "";
+    private bool isNewAppointment = true;
+
+    protected override void OnInitialized()
+    {
+        // Initialize with sample data
+        InitializeData();
+    }
+
+    private void InitializeData()
+    {
+        properties = new List<Property>
+        {
+            new Property { Id = 1, Name = "Apartment in Westlands" },
+            new Property { Id = 2, Name = "House in Karen" },
+            new Property { Id = 3, Name = "Office in CBD" }
+        };
+
+        appointments = new List<Appointment>
+        {
+            new Appointment { Id = 1, PropertyId = 1, AppointmentDate = DateTime.Parse("2023-10-15 10:00"), Status = "scheduled" },
+            new Appointment { Id = 2, PropertyId = 2, AppointmentDate = DateTime.Parse("2023-10-16 14:30"), Status = "confirmed" },
+            new Appointment { Id = 3, PropertyId = 3, AppointmentDate = DateTime.Parse("2023-10-18 11:00"), Status = "completed" }
+        };
+    }
+
+    private string GetPropertyName(int propertyId)
+    {
+        var property = properties.FirstOrDefault(p => p.Id == propertyId);
+        return property?.Name ?? "Unknown";
+    }
+
+    private void AddNewAppointment()
+    {
+        currentAppointment = new Appointment
+        {
+            PropertyId = properties.FirstOrDefault()?.Id ?? 0,
+            AppointmentDate = DateTime.Today,
+            Status = "scheduled"
+        };
+        currentDate = DateTime.Today;
+        
+        modalTitle = "Add New Appointment";
+        isNewAppointment = true;
+        showModal = true;
+    }
+
+    private void EditAppointment(Appointment appointment)
+    {
+        currentAppointment = new Appointment
+        {
+            Id = appointment.Id,
+            PropertyId = appointment.PropertyId,
+            AppointmentDate = appointment.AppointmentDate,
+            Status = appointment.Status
+        };
+        currentDate = appointment.AppointmentDate.Date;
+        
+        modalTitle = "Edit Appointment";
+        isNewAppointment = false;
+        showModal = true;
+    }
+
+    private void DeleteAppointment(Appointment appointment)
+    {
+        appointments.Remove(appointment);
+    }
+
+    private void SaveAppointment()
+    {
+        // Set date from selected date
+        currentAppointment.AppointmentDate = currentDate;
+        
+        if (isNewAppointment)
+        {
+            // For new appointment, create a new ID
+            currentAppointment.Id = appointments.Count > 0 ? appointments.Max(a => a.Id) + 1 : 1;
+            appointments.Add(currentAppointment);
+        }
+        else
+        {
+            // For existing appointment, find and replace
+            var index = appointments.FindIndex(a => a.Id == currentAppointment.Id);
+            if (index >= 0)
+            {
+                appointments[index] = currentAppointment;
+            }
+        }
+        
+        // Close the modal
+        CloseModal();
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+}

@@ -1,0 +1,797 @@
+﻿@page "/users"
+@using System.Collections.Generic
+@using System.Linq
+@using System.Timers
+
+<div class="page-container">
+    <h1>User Management</h1>
+    
+    <div class="filter-section">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search by name, email or role..." @oninput="FilterUsers" />
+        </div>
+        
+        <div class="filter-dropdown">
+            <label>Filter by Role:</label>
+            <select @onchange="FilterByRole">
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="agent">Agent</option>
+                <option value="owner">Owner</option>
+                <option value="tenant">Tenant</option>
+            </select>
+        </div>
+        
+        <div class="filter-dropdown">
+            <label>Filter by Status:</label>
+            <select @onchange="FilterByStatus">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="suspended">Suspended</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-icon admin-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Admins</h3>
+                <p>@users.Count(u => u.Role == "admin")</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon agent-icon">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Agents</h3>
+                <p>@users.Count(u => u.Role == "agent")</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon owner-icon">
+                <i class="fas fa-user-cog"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Owners</h3>
+                <p>@users.Count(u => u.Role == "owner")</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon tenant-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Tenants</h3>
+                <p>@users.Count(u => u.Role == "tenant")</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Online</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in filteredUsers)
+                {
+                    <tr>
+                        <td class="user-name-cell">
+                              <span>@user.FirstName @user.LastName</span>
+                        </td>
+                        <td>@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td>
+                            <span class="role-badge @user.Role">@user.Role</span>
+                        </td>
+                        <td>
+                            <span class="status-badge @user.Status">@user.Status</span>
+                        </td>
+                        <td>@(user.LastLogin.HasValue ? user.LastLogin.Value.ToString("MMM dd, yyyy") : "Never")</td>
+                        <td class="online-status">
+                            @if (IsUserOnline(user))
+                            {
+                                <span class="online-indicator online"></span>
+                                <span>Online</span>
+                            }
+                            else
+                            {
+                                <span class="online-indicator offline"></span>
+                                <span>Offline</span>
+                            }
+                        </td>
+                        <td class="actions-cell">
+                            <button class="action-btn view-btn" title="View Details" @onclick="() => ViewUserDetails(user)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn edit-btn" title="Edit User" @onclick="() => EditUser(user)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            @if (user.Status == "active")
+                            {
+                                <button class="action-btn suspend-btn" title="Suspend User" @onclick="() => ToggleUserStatus(user)">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="action-btn activate-btn" title="Activate User" @onclick="() => ToggleUserStatus(user)">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+    @if (selectedUser != null)
+    {
+        <div class="modal-overlay">
+            <div class="user-details-modal">
+                <div class="modal-header">
+                    <h2>User Details</h2>
+                    <button class="close-btn" @onclick="CloseUserDetails">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="user-profile-header">
+                        <div class="user-profile-info">
+                            <h3>@selectedUser.FirstName @selectedUser.LastName</h3>
+                            <p class="role-badge @selectedUser.Role">@selectedUser.Role</p>
+                            <p class="status-badge @selectedUser.Status">@selectedUser.Status</p>
+                        </div>
+                    </div>
+                    
+                    <div class="user-details-grid">
+                        <div class="detail-item">
+                            <label>Email</label>
+                            <p>@selectedUser.Email</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Phone</label>
+                            <p>@selectedUser.Phone</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>ID Number</label>
+                            <p>@selectedUser.IdNumber</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Date of Birth</label>
+                            <p>@selectedUser.DateOfBirth?.ToString("MMMM d, yyyy")</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Address</label>
+                            <p>@selectedUser.Address</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>City</label>
+                            <p>@selectedUser.City</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>County</label>
+                            <p>@selectedUser.County</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Registration Date</label>
+                            <p>@selectedUser.RegistrationDate.ToString("MMMM d, yyyy")</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Last Login</label>
+                            <p>@(selectedUser.LastLogin.HasValue ? selectedUser.LastLogin.Value.ToString("MMMM d, yyyy HH:mm") : "Never")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary-btn" @onclick="CloseUserDetails">Close</button>
+                    <button class="btn primary-btn" @onclick="() => EditUser(selectedUser)">Edit User</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .page-container {
+        padding: 20px;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    h1 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .filter-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+        align-items: center;
+    }
+    
+    .search-box {
+        flex: 1;
+        position: relative;
+        min-width: 250px;
+    }
+    
+    .search-box i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 10px 10px 10px 35px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .filter-dropdown {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .filter-dropdown label {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    
+    .filter-dropdown select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 150px;
+    }
+    
+    .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .stat-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 20px;
+    }
+    
+    .admin-icon {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+    
+    .agent-icon {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .owner-icon {
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+    
+    .tenant-icon {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+    }
+    
+    .stat-info h3 {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .stat-info p {
+        margin: 5px 0 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .table-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .users-table th {
+        background-color: #f5f5f5;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .users-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+    }
+    
+    .user-name-cell {
+        display: flex;
+        align-items: center;
+    }
+    
+    .user-name-cell img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+    }
+    
+    .role-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .role-badge.admin {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+    
+    .role-badge.agent {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .role-badge.owner {
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+    
+    .role-badge.tenant {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+    }
+    
+    .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .status-badge.active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .status-badge.inactive {
+        background-color: #f5f5f5;
+        color: #616161;
+    }
+    
+    .status-badge.suspended {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+    
+    .online-status {
+        display: flex;
+        align-items: center;
+    }
+    
+    .online-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    
+    .online-indicator.online {
+        background-color: #4caf50;
+    }
+    
+    .online-indicator.offline {
+        background-color: #9e9e9e;
+    }
+    
+    .actions-cell {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #666;
+        transition: all 0.2s;
+    }
+    
+    .view-btn:hover {
+        border-color: #1976d2;
+        color: #1976d2;
+    }
+    
+    .edit-btn:hover {
+        border-color: #2e7d32;
+        color: #2e7d32;
+    }
+    
+    .suspend-btn:hover {
+        border-color: #c62828;
+        color: #c62828;
+    }
+    
+    .activate-btn:hover {
+        border-color: #2e7d32;
+        color: #2e7d32;
+    }
+    
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    
+    .user-details-modal {
+        background-color: white;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow: auto;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-header h2 {
+        margin: 0;
+        font-size: 20px;
+    }
+    
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #666;
+        cursor: pointer;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .user-profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .user-profile-header img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-right: 20px;
+        object-fit: cover;
+    }
+    
+    .user-profile-info h3 {
+        margin: 0 0 10px;
+        font-size: 22px;
+    }
+    
+    .user-details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .detail-item label {
+        display: block;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    
+    .detail-item p {
+        margin: 0;
+        font-size: 16px;
+    }
+    
+    .modal-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+    }
+    
+    .secondary-btn {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+    .primary-btn {
+        background-color: #1976d2;
+        color: white;
+    }
+    
+    @@media (max-width: 768px) {
+        .stats-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .user-details-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+@code {
+    private List<User> users = new List<User>();
+    private List<User> filteredUsers = new List<User>();
+    private User? selectedUser;
+    private string searchQuery = "";
+    private string roleFilter = "";
+    private string statusFilter = "";
+    private List<int> onlineUserIds = new List<int>();
+    private Timer onlineStatusTimer;
+    
+    protected override void OnInitialized()
+    {
+        LoadSampleUsers();
+        filteredUsers = users;
+        
+        // Simulate some users being online
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) 
+        {
+            int userId = random.Next(1, users.Count + 1);
+            if (!onlineUserIds.Contains(userId))
+            {
+                onlineUserIds.Add(userId);
+            }
+        }
+        
+        // Set up timer to randomly change online status
+        onlineStatusTimer = new Timer(10000); // 10 seconds
+        onlineStatusTimer.Elapsed += UpdateOnlineStatus;
+        onlineStatusTimer.AutoReset = true;
+        onlineStatusTimer.Enabled = true;
+    }
+    
+    private void LoadSampleUsers()
+    {
+        users = new List<User>
+        {
+            new User { Id = 1, FirstName = "James", LastName = "Kimani", Email = "james.kimani@gmail.com", Phone = "0712345678", Role = "admin", IdNumber = "12345678", DateOfBirth = new DateTime(1985, 5, 15), Address = "Garden Estate, Off Thika Road", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 1, 10, 8, 30, 0), LastLogin = new DateTime(2023, 10, 15, 14, 20, 0), Status = "active" },
+            
+            new User { Id = 2, FirstName = "Sarah", LastName = "Wanjiku", Email = "sarah.wanjiku@gmail.com", Phone = "0723456789", Role = "agent", IdNumber = "23456789", DateOfBirth = new DateTime(1990, 8, 21), Address = "Kileleshwa, Mandera Road", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 2, 15, 10, 15, 0), LastLogin = new DateTime(2023, 10, 14, 9, 45, 0), Status = "active" },
+            
+            new User { Id = 3, FirstName = "David", LastName = "Ochieng", Email = "david.ochieng@gmail.com", Phone = "0734567890", Role = "owner", IdNumber = "34567890", DateOfBirth = new DateTime(1978, 12, 3), Address = "Nyali, Links Road", City = "Mombasa", County = "Mombasa", RegistrationDate = new DateTime(2023, 3, 5, 11, 30, 0), LastLogin = new DateTime(2023, 10, 13, 16, 30, 0), Status = "active" },
+            
+            new User { Id = 4, FirstName = "Mary", LastName = "Akinyi", Email = "mary.akinyi@gmail.com", Phone = "0745678901", Role = "tenant", IdNumber = "45678901", DateOfBirth = new DateTime(1992, 4, 18), Address = "Milimani Estate", City = "Kisumu", County = "Kisumu", RegistrationDate = new DateTime(2023, 4, 20, 9, 0, 0), LastLogin = new DateTime(2023, 10, 10, 12, 15, 0), Status = "active" },
+            
+            new User { Id = 5, FirstName = "John", LastName = "Mwangi", Email = "john.mwangi@gmail.com", Phone = "0756789012", Role = "owner", IdNumber = "56789012", DateOfBirth = new DateTime(1982, 11, 27), Address = "Karen, Bogani Road", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 1, 25, 13, 45, 0), LastLogin = new DateTime(2023, 10, 12, 10, 30, 0), Status = "active" },
+            
+            new User { Id = 6, FirstName = "Esther", LastName = "Njeri", Email = "esther.njeri@gmail.com", Phone = "0767890123", Role = "agent", IdNumber = "67890123", DateOfBirth = new DateTime(1988, 7, 9), Address = "Westlands, Waiyaki Way", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 2, 28, 15, 20, 0), LastLogin = new DateTime(2023, 10, 11, 14, 0, 0), Status = "active" },
+            
+            new User { Id = 7, FirstName = "Michael", LastName = "Kipchoge", Email = "michael.kipchoge@gmail.com", Phone = "0778901234", Role = "tenant", IdNumber = "78901234", DateOfBirth = new DateTime(1995, 3, 12), Address = "Ngong Road, Junction Mall", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 5, 10, 10, 10, 0), LastLogin = new DateTime(2023, 10, 9, 11, 45, 0), Status = "inactive" },
+            
+            new User { Id = 8, FirstName = "Grace", LastName = "Adhiambo", Email = "grace.adhiambo@gmail.com", Phone = "0789012345", Role = "tenant", IdNumber = "89012345", DateOfBirth = new DateTime(1991, 9, 30), Address = "Bamburi, Mtambo Road", City = "Mombasa", County = "Mombasa", RegistrationDate = new DateTime(2023, 6, 15, 12, 30, 0), LastLogin = new DateTime(2023, 10, 8, 15, 20, 0), Status = "active" },
+            
+            new User { Id = 9, FirstName = "Peter", LastName = "Kamau", Email = "peter.kamau@gmail.com", Phone = "0790123456", Role = "owner", IdNumber = "90123456", DateOfBirth = new DateTime(1975, 6, 22), Address = "Runda, Mimosa Drive", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 7, 20, 14, 15, 0), LastLogin = new DateTime(2023, 10, 7, 17, 0, 0), Status = "active" },
+            
+            new User { Id = 10, FirstName = "Elizabeth", LastName = "Wambui", Email = "elizabeth.wambui@gmail.com", Phone = "0701234567", Role = "agent", IdNumber = "01234567", DateOfBirth = new DateTime(1987, 10, 5), Address = "Lavington, James Gichuru Road", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 8, 1, 9, 50, 0), LastLogin = new DateTime(2023, 10, 6, 13, 10, 0), Status = "active" },
+            
+            new User { Id = 11, FirstName = "Daniel", LastName = "Mutuku", Email = "daniel.mutuku@gmail.com", Phone = "0711223344", Role = "tenant", IdNumber = "10293847", DateOfBirth = new DateTime(1993, 1, 25), Address = "South B, Muchai Drive", City = "Nairobi", County = "Nairobi", RegistrationDate = new DateTime(2023, 8, 15, 11, 20, 0), LastLogin = new DateTime(2023, 10, 5, 9, 30, 0), Status = "suspended" },
+            
+            new User { Id = 12, FirstName = "Jane", LastName = "Nyambura", Email = "jane.nyambura@gmail.com", Phone = "0722334455", Role = "owner", IdNumber = "20394857", DateOfBirth = new DateTime(1980, 5, 14), Address = "Kitengela, Namanga Road", City = "Kajiado", County = "Kajiado", RegistrationDate = new DateTime(2023, 9, 5, 13, 40, 0), LastLogin = new DateTime(2023, 10, 4, 12, 50, 0), Status = "active" }
+        };
+    }
+    
+    private void FilterUsers(ChangeEventArgs e)
+    {
+        searchQuery = e?.Value?.ToString() ?? "";
+        ApplyFilters();
+    }
+    
+    private void FilterByRole(ChangeEventArgs e)
+    {
+        roleFilter = e?.Value?.ToString() ?? "";
+        ApplyFilters();
+    }
+    
+    private void FilterByStatus(ChangeEventArgs e)
+    {
+        statusFilter = e?.Value?.ToString() ?? "";
+        ApplyFilters();
+    }
+    
+    private void ApplyFilters()
+    {
+        var result = users.AsEnumerable();
+        
+        // Apply search filter
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            result = result.Where(u => 
+                (u.FirstName + " " + u.LastName).Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                u.Email.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                u.Role.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+        
+        // Apply role filter
+        if (!string.IsNullOrWhiteSpace(roleFilter))
+        {
+            result = result.Where(u => u.Role == roleFilter);
+        }
+        
+        // Apply status filter
+        if (!string.IsNullOrWhiteSpace(statusFilter))
+        {
+            result = result.Where(u => u.Status == statusFilter);
+        }
+        
+        filteredUsers = result.ToList();
+    }
+    
+    private bool IsUserOnline(User user)
+    {
+        return onlineUserIds.Contains(user.Id);
+    }
+    
+    private void UpdateOnlineStatus(object source, ElapsedEventArgs e)
+    {
+        // Simulate users logging in and out randomly
+        Random random = new Random();
+        
+        // Random user logs in
+        int userToLogin = random.Next(1, users.Count + 1);
+        if (!onlineUserIds.Contains(userToLogin))
+        {
+            onlineUserIds.Add(userToLogin);
+        }
+        
+        // Random user logs out (if there are at least 2 online)
+        if (onlineUserIds.Count > 2)
+        {
+            int indexToRemove = random.Next(0, onlineUserIds.Count);
+            onlineUserIds.RemoveAt(indexToRemove);
+        }
+        
+        // Trigger UI update on the UI thread
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void ViewUserDetails(User user)
+    {
+        selectedUser = user;
+    }
+    
+    private void CloseUserDetails()
+    {
+        selectedUser = null;
+    }
+    
+    private void EditUser(User user)
+    {
+        // In a real app, this would navigate to the edit page
+        // For this demo, just show an alert
+        Console.WriteLine($"Edit user: {user.FirstName} {user.LastName}");
+    }
+    
+    private void ToggleUserStatus(User user)
+    {
+        if (user.Status == "active")
+        {
+            user.Status = "suspended";
+        }
+        else
+        {
+            user.Status = "active";
+        }
+    }
+    
+    public class User
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public string Role { get; set; } = "";
+        public string IdNumber { get; set; } = "";
+        public DateTime? DateOfBirth { get; set; }
+        public string Address { get; set; } = "";
+        public string City { get; set; } = "";
+        public string County { get; set; } = "";
+        public DateTime RegistrationDate { get; set; }
+        public DateTime? LastLogin { get; set; }
+        public string Status { get; set; } = "";
+    }
+}
